@@ -47,8 +47,8 @@ var Fn_GetMostSearched = function (callback) {
     });
 };
 var Fn_GetMostLiked = function (callback) {
-    Article.byMostLikes(5, function (err, likes) {
-        responseObject.likes = likes;
+    Article.byMostReads(5, function (err, reads) {
+        responseObject.reads = reads;
         callback();
     });
 };
@@ -87,8 +87,8 @@ var Fn_GetSearchResults = function (term, collection, callback) {
                 short: result.short,
                 cover: result.cover,
                 posted: result.posted,
-                likes: result.likes.length,
-                comments: result.comments.length
+                reads: result.reads,
+                comments: result.comments
             });
         });
         callback();

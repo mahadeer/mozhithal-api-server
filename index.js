@@ -24,6 +24,9 @@ async.series([
     },
     function initialSeed(callback) {
         require('./config/initializers/seeds')(callback);
+    },
+    function updateComments(callback) {
+        require('./app/utils/disqus')(callback);
     }
 ], function(err) {
     if (err) {

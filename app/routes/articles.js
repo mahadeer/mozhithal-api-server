@@ -1,4 +1,5 @@
 var async = require("async"),
+    mongoose = require('mongoose'),
     Article = require('./../models/article'),
     Search = require('./../models/misc');
 module.exports = function (router) {
@@ -13,6 +14,9 @@ module.exports = function (router) {
                 },
                 function (callback) {
                     Fn_GetNextArticleInfo(req.params._id, responseObject ,callback);
+                },
+                function (callback) {
+                    Fn_UpdateArticleReads(req.params._id, callback);
                 }
             ], function(err){
                 if (err) {
@@ -103,5 +107,18 @@ var Fn_GetNextArticleInfo = function(_id, obj, callback) {
         obj.next = nextArticle[0];
         obj.isNext = (nextArticle.length > 0);
         callback();
+    });
+};
+
+var Fn_UpdateArticleReads = function (_id, callback) {
+    Article.findOne({'_id': mongoose.Types.ObjectId(_id)}, function (err, article) {
+        article.reads = article.reads + 1;
+        article.save(function (err) {
+            if (!err) {
+                callback();
+            } else {
+                callback(null);
+            }
+        });
     });
 };

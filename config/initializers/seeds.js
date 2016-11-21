@@ -1,6 +1,5 @@
 var mongoose = require("mongoose"),
     async = require('async'),
-    Chance = require('chance'),
     Article = require('./../../app/models/article'),
     Search = require('./../../app/models/misc');
 
@@ -32,17 +31,8 @@ var Fn_ArticleSeed = function (call_back) {
                 article.cover = seed.cover;
                 article.content = seed.content;
                 article.short = seed.short;
-                var chance = new Chance();
-                for(var i = 0; i< seed.likes; i++) {
-                    article.likes.push(chance.name());
-                }
-                var _comments = [];
-                for(var j = 0; j< seed.comments; j++) {
-                    var _comment = {};
-                    _comment.comment = chance.sentence();
-                    _comments.push(_comment);
-                }
-                article.comments = _comments;
+                article.reads = 0;
+                article.comments = 0;
                 NewArticles.push(article);
                 console.log('Articles seeds pushed ' + article.title);
             });
@@ -54,6 +44,8 @@ var Fn_ArticleSeed = function (call_back) {
                 console.log('Initial Articles seeds finished...');
                 call_back();
             });
+        } else {
+            call_back();
         }
     });
 };
@@ -80,6 +72,8 @@ var Fn_SearchSeed = function (call_back) {
                 console.log('Initial Search seeds finished...');
                 call_back();
             });
+        } else {
+            call_back();
         }
     });
 };

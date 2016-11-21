@@ -8,8 +8,8 @@ var articleSchema = new Schema({
     "cover": String,
     "short": String,
     "content": String,
-    "likes": [{ type: String, trim: true }],
-    "comments": [],
+    "reads": { type: Number, default:0 },
+    "comments": { type: Number, default:0 },
     created: {
         type: Date,
         default: Date.now
@@ -24,7 +24,7 @@ articleSchema.index({
 /* Get the search results of articles */
 articleSchema.statics.bySearchTerm = function (term, cb) {
     return this.find({ $text: {$search: term}},
-        "_id title labels short cover posted likes comments", cb);
+        "_id title labels short cover posted reads comments", cb);
 };
 
 /* Get the result by labels of articles */
@@ -41,23 +41,23 @@ articleSchema.statics.byLabel = function (label, cb) {
                 category: '$category',
                 labels: '$labels',
                 posted: '$created',
-                likes: {$size: '$likes'},
-                comments: {$size: '$comments'}
+                reads: '$reads',
+                comments: '$comments'
             }
         },
         {$sort: {posted: -1}}
     ], cb);
 };
 
-/* Get Most Liked Articles */
-articleSchema.statics.byMostLikes = function (count, cb) {
+/* Get Most Reads Articles */
+articleSchema.statics.byMostReads = function (count, cb) {
     return this.aggregate([
         {
             $project: {
                 _id: 0,
                 uri: '$_id',
                 title: '$title',
-                count: {$size: '$likes'}
+                count: '$reads'
             }
         },
         {$sort: {count: -1}},
@@ -72,7 +72,7 @@ articleSchema.statics.byMostCommented = function (count, cb) {
                 _id: 0,
                 uri: '$_id',
                 title: '$title',
-                count: {$size: '$comments'}
+                count: '$comments'
             }
         },
         {$sort: {count: -1}},
@@ -92,8 +92,8 @@ articleSchema.statics.getPaginatedArticles = function (pageObj, cb) {
                 category: '$category',
                 labels: '$labels',
                 posted: '$created',
-                likes: {$size: '$likes'},
-                comments: {$size: '$comments'}
+                reads: '$reads',
+                comments: '$comments'
             }
         },
         {$sort: {posted: -1}},
@@ -145,8 +145,8 @@ articleSchema.statics.getArticle = function (_id, cb) {
                 category: '$category',
                 labels: '$labels',
                 posted: '$created',
-                likes: {$size: '$likes'},
-                comments: {$size: '$comments'}
+                reads: '$reads',
+                comments: '$comments'
             }
         }
     ], cb);
