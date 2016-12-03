@@ -1,6 +1,8 @@
 var async = require("async"),
     Article = require('./../models/article'),
-    Search = require('./../models/misc');
+    Misc = require('./../models/misc'),
+    Search = Misc.Search,
+    Subscribe = Misc.Subscriber;
 var responseObject = {};
 module.exports = function (router) {
     'use strict';
@@ -34,6 +36,12 @@ module.exports = function (router) {
     router.get('/labels/:label', function (req, res, next) {
         Article.byLabel(req.params.label, function (err, results) {
             res.json(results);
+        });
+    });
+    router.post('/subscribe', function (req,res,next){
+       var email = req.body.email;
+        Subscribe.AddSubscriber(email).then(function(response){
+            res.json(response);
         });
     });
 };

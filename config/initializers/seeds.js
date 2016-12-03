@@ -1,7 +1,8 @@
 var mongoose = require("mongoose"),
     async = require('async'),
     Article = require('./../../app/models/article'),
-    Search = require('./../../app/models/misc');
+    Misc = require('./../../app/models/misc'),
+    Search = Misc.Search;
 
 var mockSeeds = require('./db-seeds/articles.json');
 module.exports = function(call_back) {

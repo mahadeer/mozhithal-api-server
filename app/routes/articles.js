@@ -1,7 +1,8 @@
 var async = require("async"),
     mongoose = require('mongoose'),
     Article = require('./../models/article'),
-    Search = require('./../models/misc');
+    Misc = require('./../models/misc'),
+    Search = Misc.Search;
 module.exports = function (router) {
     'use strict';
     // This will handle the url calls for /users/:user_id

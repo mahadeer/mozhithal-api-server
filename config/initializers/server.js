@@ -35,7 +35,7 @@ var server = function(cb) {
     });
 
     app.listen(config.get('NODE_PORT'));
-    console.log(config.get('APP_NAME') + ' server started at ' + config.get('NODE_PORT'))
+    console.log(config.get('APP_NAME') + ' server started at ' + config.get('NODE_PORT'));
     if (cb) {
         cb();
     }

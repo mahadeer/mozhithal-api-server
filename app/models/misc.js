@@ -22,5 +22,33 @@ searchSchema.statics.byMostSearched = function (count, cb) {
 
 var Search = mongoose.model('search', searchSchema);
 
-module.exports = Search;
+var feedbackSchema = new mongoose.Schema({
+    name: String,
+    email: String,
+    message: String,
+    isRead: Boolean,
+    posted: {
+        type: Date,
+        default: Date.now
+    }
+});
+
+var Feedback = mongoose.model('Feedback', feedbackSchema);
+
+var subscriberSchema = new mongoose.Schema({
+    email: String,
+    added: {
+        type: Date,
+        default: Date.now
+    },
+    activated: Boolean
+});
+
+var Subscriber = mongoose.model('Subscriber', subscriberSchema);
+
+module.exports = {
+    Search: Search,
+    Feedback: Feedback,
+    Subscriber: Subscriber
+};
 
